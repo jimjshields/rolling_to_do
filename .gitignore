@@ -58,3 +58,8 @@ venv/
 
 # secret key
 secret_key
+
+#db stuff
+tmp
+*.db
+db*

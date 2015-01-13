@@ -13,6 +13,11 @@ def index():
 	"""Renders the index template."""
 	return render_template("index.html")
 
+@app.route('/to_do')
+def show_to_do():
+	"""Renders the user's to-do list."""
+	# cur = g.db.execute('select to_do')
+
 # login - hold off until later
 # this function accepts GET and POST requests
 # both must be specified if you want more than GET
@@ -39,7 +44,7 @@ def init_db():
 	"""Initializes the database with the provided schema."""
 	with closing(connect_db()) as db:
 		with app.open_resource('schema.sql', mode='r') as f:
-			db.cursor.executescript(f.read())
+			db.cursor().executescript(f.read())
 		db.commit()
 		print "Initialized the database."
 
