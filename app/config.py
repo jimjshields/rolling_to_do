@@ -26,3 +26,7 @@ def install_secret_key(app, filename='secret_key'):
 WTF_CSRF_ENABLED = True
 # secret key
 SECRET_KEY = '\\xf1j\\x8c\\x85+V\\xe7;\\xef\\x1d\\x0f\\x89\\xce`\\x06#\\x8a}\\xbd"\\xde\\x10\\xbfJ' #install_secret_key(app)
+
+OPENID_PROVIDERS = [
+    {'name': 'Google', 'url': 'https://www.google.com/accounts/o8/id'}
+    ]

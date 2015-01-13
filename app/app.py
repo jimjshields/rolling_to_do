@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, redirect
 from forms import LoginForm
 
 app = Flask(__name__)
@@ -21,9 +21,9 @@ def login():
 		# quick way to show message to users on the next page; here just used for debugging
 		flash('Login requested for OpenID = %s, remember_me=%s' % (form.openid.data, str(form.remember_me.data)))
 		# if it's all validated, redirect user to index
-		return redirect('/index')
+		return redirect('/')
 	# if it's not, render the login page
-	return render_template('login.html', title='Sign In', form=form)
+	return render_template('login.html', title='Sign In', form=form, providers=app.config['OPENID_PROVIDERS'])
 
 if __name__ == '__main__':
 	app.run(debug=True)
