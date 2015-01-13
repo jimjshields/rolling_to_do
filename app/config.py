@@ -2,6 +2,8 @@ import sys
 import os.path
 from app import app
 
+DATABASE = 'tmp/db'
+
 # taken from http://flask.pocoo.org/snippets/104/ - read a secret key from a file
 def install_secret_key(app, filename='secret_key'):
     """Configure the SECRET_KEY from a file
