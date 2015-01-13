@@ -25,4 +25,4 @@ def install_secret_key(app, filename='secret_key'):
 # cross-site request forgery prevention
 WTF_CSRF_ENABLED = True
 # secret key
-SECRET_KEY = install_secret_key(app)
+SECRET_KEY = '\\xf1j\\x8c\\x85+V\\xe7;\\xef\\x1d\\x0f\\x89\\xce`\\x06#\\x8a}\\xbd"\\xde\\x10\\xbfJ' #install_secret_key(app)

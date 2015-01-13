@@ -1,0 +1,17 @@
+<!-- extend from base layout -->
+{% extends "layout.html" %}
+
+{% block content %}
+	<h1>Sign In</h1>
+	<!-- the form -->
+	<form action="" method="post" name="login">
+		<!-- csrf prevention -->
+		{{ form.hidden_tag() }}
+		<!-- openid attribute -->
+		<p>Please enter your OpenID: {{ form.openid(size=80) }}</p>
+		<!-- remember_me attribute -->
+		<p>{{ form.remember_me }} Remember Me</p>
+		<!-- submit the form -->
+		<p><input type="submit" value="Sign In"></p>
+	</form>
+{% endblock %}
