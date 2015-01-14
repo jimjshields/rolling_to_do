@@ -1,6 +1,5 @@
 import sqlite3
 from flask import Flask, render_template, flash, redirect
-from forms import LoginForm
 from contextlib import closing
 
 app = Flask(__name__)
@@ -50,6 +49,7 @@ if __name__ == '__main__':
 
 
 # login - hold off until later
+# from forms import LoginForm
 # this function accepts GET and POST requests
 # both must be specified if you want more than GET
 # @app.route('/login', methods=['GET', 'POST'])
