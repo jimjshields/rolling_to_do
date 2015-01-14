@@ -1,5 +1,8 @@
 {% block head %}
 <style>
+	body {
+		text-align: center;
+	}
 	ul {
 		list-style-type: none;
 		padding: 0;
@@ -7,26 +10,36 @@
 	li.completed {
 		text-decoration: line-through;
 	}
+	li.today {
+		color: green;
+	}
+	li.past {
+		color: red;
+	}
 </style>
 {% endblock %}
 
 {% block body %}
-<h1>My To-Dos</h1>
-
 <ul>
-
 	<form action="{{ url_for('add_to_do') }}" method=post class=add-to-do>
 		<li><input type=text size=30 name="item" placeholder="Add to-do"></li>
 	</form>
 	<form action="{{ url_for('complete_to_do') }}" method=post class=complete-to-do>
-	{% for to_do in to_dos if not to_do.is_completed %}
-		<li><input type="checkbox" name="{{ to_do.item }}" value="yes"> {{ to_do.item }}</li>
+	{% for to_do in today_to_dos %}
+		<li class="today"><input type="checkbox" name="{{ to_do.item }}" value="yes"> {{ to_do.item }}</li>
 	{% endfor %}
+	{% for to_do in past_to_dos %}
+		<li class="past"><input type="checkbox" name="{{ to_do.item }}" value="yes"> {{ to_do.item }}</li>
+	{% endfor %}
+		<br>
 		<input type="submit" value="Check off completed items">
 	</form>
+</ul>
 
-{% for to_do in to_dos if to_do.is_completed %}
-	<li class="completed">{{ to_do.item }}{{ to_do.completed_time }}</li>
+<hr>
+<h3>Done Today</h3>
+{% for to_do in today_completed_to_dos %}
+	<li class="completed">{{ to_do.item }} (Done {{ to_do.completed_time }})</li>
 {% endfor %}
 
 </ul>

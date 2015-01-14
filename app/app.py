@@ -1,7 +1,7 @@
 import sqlite3
 from flask import Flask, request, render_template, g, flash, url_for, redirect
 from contextlib import closing
-from datetime import datetime
+from datetime import datetime, date
 
 # configuration - figure out later how to port into separate file
 DATABASE = '/tmp/db.db'
@@ -20,31 +20,40 @@ def index():
 	"""Renders the index template."""
 	return render_template("index.html")
 
-@app.route('/to_do')
+@app.route('/to_do/')
 def show_to_dos():
 	"""Renders the user's to-do list."""
-	cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos')
-	to_dos = [dict(item=row[0], entry_time=row[1], is_completed=row[2], completed_time=row[3]) for row in cur.fetchall()]
-	return render_template('to_dos.html', to_dos = to_dos)
+	today = datetime.now().strftime('%m/%d/%Y')
+
+	today_cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos where entry_time = ? and is_completed = 0', [today])
+	today_to_dos = [dict(item=row[0], entry_time=row[1], is_completed=row[2], completed_time=row[3]) for row in today_cur.fetchall()]
+
+	past_cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos where entry_time < ? and is_completed = 0', [today])
+	past_to_dos = [dict(item=row[0], entry_time=row[1], is_completed=row[2], completed_time=row[3]) for row in past_cur.fetchall()]
+
+	today_completed_cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos where completed_time = ? and is_completed = 1', [today])
+	today_completed_to_dos = [dict(item=row[0], entry_time=row[1], is_completed=row[2], completed_time=row[3]) for row in today_completed_cur.fetchall()]
+	
+	return render_template('to_dos.html', today_to_dos = today_to_dos, past_to_dos = past_to_dos, today_completed_to_dos = today_completed_to_dos)
 
 @app.route('/to_do/add', methods=['POST'])
 def add_to_do():
-	"""Add a to-do from the form to the to-do list."""
-	now = str(datetime.now())
+	"""Adds a to-do from the form to the to-do list."""
+	today = datetime.now().strftime('%m/%d/%Y')
 	g.db.execute('insert into to_dos (item, entry_time, is_completed, completed_time) values (?, ?, ?, ?)',
-				 [request.form['item'], now, False, 'NULL'])
+				 [request.form['item'], today, False, 'NULL'])
 	g.db.commit()
 	flash('New entry was successfully posted.')
 	return redirect(url_for('show_to_dos'))
 
 @app.route('/to_do/complete', methods=['POST'])
 def complete_to_do():
-	"""Change a checked to-do to completed."""
+	"""Changes a checked to-do to completed."""
 	completed_items = [item[0] for item in request.form.items()]
-	now = str(datetime.now())
+	today = datetime.now().strftime('%m/%d/%Y')
 	for item in completed_items:
 		g.db.execute('update to_dos set is_completed = ?, completed_time = ? where item = ?;',
-					 [True, now, item])
+					 [True, today, item])
 		g.db.commit()
 	return redirect(url_for('show_to_dos'))
 
