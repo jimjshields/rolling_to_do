@@ -2,7 +2,7 @@
 	<form action="{{ url_for('add_to_do') }}" method=post class=add-to-do>
 		<dl>
 			<dt>Add to do:</dt>
-			<dd><input type=text size=30 name=to-do></dd>
+			<dd><input type=text size=30 name=item></dd>
 		</dl>
 	</form>
 
@@ -10,7 +10,7 @@
 
 	<ul>
 	{% for to_do in to_dos %}
-		<li>{{ to_do.to_do }}</li>
+		<li>{{ to_do.item }} - {{ to_do.entry_time }}</li>
 	{% endfor %}
 	</ul>
 {% endblock %}
