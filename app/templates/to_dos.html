@@ -1,10 +1,33 @@
+{% block head %}
+<style>
+	ul {
+		list-style-type: none;
+		padding: 0;
+	}
+	li.completed {
+		text-decoration: line-through;
+	}
+</style>
+{% endblock %}
+
 {% block body %}
-	<ol>
-	{% for to_do in to_dos %}
-		<li>{{ to_do.item }} - {{ to_do.entry_time }}</li>
+<h1>My To-Dos</h1>
+
+<ul>
+
+	<form action="{{ url_for('add_to_do') }}" method=post class=add-to-do>
+		<li><input type=text size=30 name="item" placeholder="Add to-do"></li>
+	</form>
+	<form action="{{ url_for('complete_to_do') }}" method=post class=complete-to-do>
+	{% for to_do in to_dos if not to_do.is_completed %}
+		<li><input type="checkbox" name="{{ to_do.item }}" value="yes"> {{ to_do.item }}</li>
 	{% endfor %}
-		<form action="{{ url_for('add_to_do') }}" method=post class=add-to-do>
-			<li><input type=text size=30 name=item placeholder="Add to-do"></li>
-		</form>
-	</ol>
+		<input type="submit" value="Check off completed items">
+	</form>
+
+{% for to_do in to_dos if to_do.is_completed %}
+	<li class="completed">{{ to_do.item }}{{ to_do.completed_time }}</li>
+{% endfor %}
+
+</ul>
 {% endblock %}

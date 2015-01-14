@@ -37,6 +37,17 @@ def add_to_do():
 	flash('New entry was successfully posted.')
 	return redirect(url_for('show_to_dos'))
 
+@app.route('/to_do/complete', methods=['POST'])
+def complete_to_do():
+	"""Change a checked to-do to completed."""
+	completed_items = [item[0] for item in request.form.items()]
+	now = str(datetime.now())
+	for item in completed_items:
+		g.db.execute('update to_dos set is_completed = ?, completed_time = ? where item = ?;',
+					 [True, now, item])
+		g.db.commit()
+	return redirect(url_for('show_to_dos'))
+
 ### database functions ###
 def connect_db():
 	"""Connects to the configured database."""
