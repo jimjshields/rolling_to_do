@@ -1,7 +1,7 @@
 import sqlite3
 from flask import Flask, request, render_template, g, flash, url_for, redirect
 from contextlib import closing
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 # configuration - figure out later how to port into separate file
 DATABASE = '/tmp/db.db'
@@ -26,6 +26,11 @@ def show_to_dos(show_date):
 	if show_date == 'today':
 		show_date = stringify_date(datetime.now())
 
+	today = datetime.strptime(show_date, "%m-%d-%Y")
+	yesterday = stringify_date(today - timedelta(days=1))
+	tomorrow = stringify_date(today + timedelta(days=1))
+	today = stringify_date(today)
+
 	today_cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos where entry_time = ? and is_completed = 0', [show_date])
 	today_to_dos = [dict(item=row[0], entry_time=row[1], is_completed=row[2], completed_time=row[3]) for row in today_cur.fetchall()]
 
@@ -35,7 +40,7 @@ def show_to_dos(show_date):
 	today_completed_cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos where completed_time = ? and is_completed = 1', [show_date])
 	today_completed_to_dos = [dict(item=row[0], entry_time=row[1], is_completed=row[2], completed_time=row[3]) for row in today_completed_cur.fetchall()]
 	
-	return render_template('to_dos.html', today_to_dos = today_to_dos, past_to_dos = past_to_dos, today_completed_to_dos = today_completed_to_dos)
+	return render_template('to_dos.html', today_to_dos=today_to_dos, past_to_dos=past_to_dos, today_completed_to_dos=today_completed_to_dos, today=today, yesterday=yesterday, tomorrow=tomorrow)
 
 @app.route('/to_do/add', methods=['POST'])
 def add_to_do():
@@ -44,7 +49,7 @@ def add_to_do():
 	g.db.execute('insert into to_dos (item, entry_time, is_completed, completed_time) values (?, ?, ?, ?)',
 				 [request.form['item'], today, False, 'NULL'])
 	g.db.commit()
-	flash('New entry was successfully posted.')
+	# flash('New entry was successfully posted.')
 	return redirect(url_for('show_to_dos', show_date='today'))
 
 @app.route('/to_do/complete', methods=['POST'])

@@ -7,6 +7,9 @@
 		list-style-type: none;
 		padding: 0;
 	}
+	ul.navbar {
+		padding: 0;
+	}
 	li.completed {
 		text-decoration: line-through;
 	}
@@ -16,20 +19,29 @@
 	li.past {
 		color: red;
 	}
+	li.date-links {
+		display: inline;
+		flex-grow: 1;
+	}
+	li.date-links > a {
+		text-decoration: none;
+	}
+
 </style>
 {% endblock %}
 
 {% block body %}
+
 <ul>
 	<form action="{{ url_for('add_to_do') }}" method=post class=add-to-do>
 		<li><input type=text size=30 name="item" placeholder="Add to-do"></li>
 	</form>
 	<form action="{{ url_for('complete_to_do') }}" method=post class=complete-to-do>
 	{% for to_do in today_to_dos %}
-		<li class="today"><input type="checkbox" name="{{ to_do.item }}" value="yes"> {{ to_do.item }} - {{ to_do.entry_time }}</li>
+		<li class="today"><input type="checkbox" name="{{ to_do.item }}" value="yes"> {{ to_do.item }} (created on {{ to_do.entry_time }})</li>
 	{% endfor %}
 	{% for to_do in past_to_dos %}
-		<li class="past"><input type="checkbox" name="{{ to_do.item }}" value="yes"> {{ to_do.item }} - {{ to_do.entry_time }}</li>
+		<li class="past"><input type="checkbox" name="{{ to_do.item }}" value="yes"> {{ to_do.item }} (created on {{ to_do.entry_time }})</li>
 	{% endfor %}
 		<br>
 		<input type="submit" value="Check off completed items">
@@ -37,10 +49,18 @@
 </ul>
 
 <hr>
-<h3>Done Today</h3>
+<h3>Completed on {{ today }}</h3>
 {% for to_do in today_completed_to_dos %}
-	<li class="completed">{{ to_do.item }} (Done {{ to_do.completed_time }})</li>
+	<li class="completed">{{ to_do.item }}</li>
 {% endfor %}
 
 </ul>
+
 {% endblock %}
+
+<hr>
+<ul class="navbar">
+	<li class="date-links"><a href="/to_do/{{ yesterday }}">{{ yesterday }}</a></li> |
+	<li class="date-links"><a href="/to_do/today">Today</a></li> |
+	<li class="date-links"><a href="/to_do/{{ tomorrow }}">{{ tomorrow }}</a></li>
+</ul>
