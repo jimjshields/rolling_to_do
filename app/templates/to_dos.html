@@ -1,0 +1,16 @@
+{% block body %}
+	<form action="{{ url_for('add_to_do') }}" method=post class=add-to-do>
+		<dl>
+			<dt>Add to do:</dt>
+			<dd><input type=text size=30 name=to-do></dd>
+		</dl>
+	</form>
+
+	<hr>
+
+	<ul>
+	{% for to_do in to_dos %}
+		<li>{{ to_do.to_do }}</li>
+	{% endfor %}
+	</ul>
+{% endblock %}

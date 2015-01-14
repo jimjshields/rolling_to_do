@@ -4,7 +4,7 @@ from contextlib import closing
 from datetime import datetime
 
 # configuration - figure out later how to port into separate file
-DATABASE = 'tmp/db.db'
+DATABASE = '/tmp/db.db'
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
