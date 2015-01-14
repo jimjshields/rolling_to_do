@@ -1,6 +1,10 @@
 from app import app
 
 DATABASE = 'tmp/db.db'
+DEBUG = True
+SECRET_KEY = 'development key'
+USERNAME = 'admin'
+PASSWORD = 'default'
 
 
 # moved to bottom - maybe use later if at all
