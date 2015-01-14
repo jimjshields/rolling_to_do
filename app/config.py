@@ -1,5 +1,3 @@
-from app import app
-
 DATABASE = 'tmp/db.db'
 DEBUG = True
 SECRET_KEY = 'development key'

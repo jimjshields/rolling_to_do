@@ -1,6 +1,7 @@
 import sqlite3
 from flask import Flask, render_template, flash, redirect
 from contextlib import closing
+import config
 
 app = Flask(__name__)
 app.config.from_object('config')
