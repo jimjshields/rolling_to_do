@@ -1,10 +1,16 @@
 import sqlite3
 from flask import Flask, render_template, flash, redirect
 from contextlib import closing
-import config
+
+# configuration - figure out later how to port into separate file
+DATABASE = 'tmp/db.db'
+DEBUG = True
+SECRET_KEY = 'development key'
+USERNAME = 'admin'
+PASSWORD = 'default'
 
 app = Flask(__name__)
-app.config.from_object('config')
+app.config.from_object(__name__)
 
 ### url routing/view functions ###
 
