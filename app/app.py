@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, render_template, g
+from flask import Flask, render_template, g, flash, url_for
 from contextlib import closing
 from datetime import datetime
 
@@ -21,7 +21,7 @@ def index():
 	return render_template("index.html")
 
 @app.route('/to_do')
-def show_to_do():
+def show_to_dos():
 	"""Renders the user's to-do list."""
 	cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos')
 	to_dos = [dict(item=row[0], entry_time=row[1], is_completed=row[2], completed_time=row[3]) for row in cur.fetchall()]
@@ -32,7 +32,10 @@ def add_to_do():
 	"""Add a to-do from the form to the to-do list."""
 	now = str(datetime.now())
 	g.db.execute('insert into to_dos (item, entry_time, is_completed, completed_time) values (?, ?, ?, ?)',
-				 [request.form['item'], now, False, 'NULL'], )
+				 [request.form['item'], now, False, 'NULL'])
+	g.db.commit()
+	flash('New entry was successfully posted.')
+	return redirect(url_for('show_to_dos'))
 
 ### database functions ###
 def connect_db():
