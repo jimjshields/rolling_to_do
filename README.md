@@ -1,7 +1,7 @@
 ## Rolling To-Do
 
 ####Specs:
-1. User can add to-do items of any length
+1. ~~User can add to-do items of any length~~
 2. User can access these in another session
 3. User can cross off these items
 4. User can delete these items
