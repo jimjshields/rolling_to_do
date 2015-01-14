@@ -23,15 +23,15 @@ def index():
 @app.route('/to_do')
 def show_to_do():
 	"""Renders the user's to-do list."""
-	cur = g.db.execute('select item, entry_time, completed_time from to_dos')
-	to_dos = [dict(item=row[0], entry_time=row[1], completed_time=row[2]) for row in cur.fetchall()]
+	cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos')
+	to_dos = [dict(item=row[0], entry_time=row[1], is_completed=row[2], completed_time=row[3]) for row in cur.fetchall()]
 	return render_template('to_dos.html', to_dos = to_dos)
 
 @app.route('/to_do/add', methods=['POST'])
 def add_to_do():
 	"""Add a to-do from the form to the to-do list."""
 	now = str(datetime.now())
-	g.db.execute('insert into to_dos (item, entry_time, completed, completed_time) values (?, ?, ?, ?)',
+	g.db.execute('insert into to_dos (item, entry_time, is_completed, completed_time) values (?, ?, ?, ?)',
 				 [request.form['item'], now, False, 'NULL'], )
 
 ### database functions ###
