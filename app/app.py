@@ -18,23 +18,6 @@ def show_to_do():
 	"""Renders the user's to-do list."""
 	# cur = g.db.execute('select to_do')
 
-# login - hold off until later
-# this function accepts GET and POST requests
-# both must be specified if you want more than GET
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-# 	"""Validates the login form.
-# 	   If validated, redirects user to index."""
-# 	form = LoginForm()
-# 	# this does the validation work
-# 	if form.validate_on_submit():
-# 		# quick way to show message to users on the next page; here just used for debugging
-# 		flash('Login requested for OpenID = %s, remember_me=%s' % (form.openid.data, str(form.remember_me.data)))
-# 		# if it's all validated, redirect user to index
-# 		return redirect('/')
-# 	# if it's not, render the login page
-# 	return render_template('login.html', title='Sign In', form=form, providers=app.config['OPENID_PROVIDERS'])
-
 ### database functions ###
 def connect_db():
 	"""Connects to the configured database."""
@@ -64,3 +47,21 @@ def teardown_request(exception):
 
 if __name__ == '__main__':
 	app.run(debug=True)
+
+
+# login - hold off until later
+# this function accepts GET and POST requests
+# both must be specified if you want more than GET
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+# 	"""Validates the login form.
+# 	   If validated, redirects user to index."""
+# 	form = LoginForm()
+# 	# this does the validation work
+# 	if form.validate_on_submit():
+# 		# quick way to show message to users on the next page; here just used for debugging
+# 		flash('Login requested for OpenID = %s, remember_me=%s' % (form.openid.data, str(form.remember_me.data)))
+# 		# if it's all validated, redirect user to index
+# 		return redirect('/')
+# 	# if it's not, render the login page
+# 	return render_template('login.html', title='Sign In', form=form, providers=app.config['OPENID_PROVIDERS'])
