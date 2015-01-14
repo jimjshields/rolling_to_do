@@ -1,9 +1,10 @@
 import sqlite3
 from flask import Flask, render_template, g
 from contextlib import closing
+from datetime import datetime
 
 # configuration - figure out later how to port into separate file
-DATABASE = '/tmp/db.db'
+DATABASE = 'tmp/db.db'
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
@@ -24,7 +25,14 @@ def show_to_do():
 	"""Renders the user's to-do list."""
 	cur = g.db.execute('select item, entry_time, completed_time from to_dos')
 	to_dos = [dict(item=row[0], entry_time=row[1], completed_time=row[2]) for row in cur.fetchall()]
-	return render_template()
+	return render_template('to_dos.html', to_dos = to_dos)
+
+@app.route('/to_do/add', methods=['POST'])
+def add_to_do():
+	"""Add a to-do from the form to the to-do list."""
+	now = str(datetime.now())
+	g.db.execute('insert into to_dos (item, entry_time, completed, completed_time) values (?, ?, ?, ?)',
+				 [request.form['item'], now, False, 'NULL'], )
 
 ### database functions ###
 def connect_db():
