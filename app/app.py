@@ -1,9 +1,9 @@
 import sqlite3
-from flask import Flask, render_template, flash, redirect
+from flask import Flask, render_template, g
 from contextlib import closing
 
 # configuration - figure out later how to port into separate file
-DATABASE = 'tmp/db.db'
+DATABASE = '/tmp/db.db'
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
@@ -22,7 +22,9 @@ def index():
 @app.route('/to_do')
 def show_to_do():
 	"""Renders the user's to-do list."""
-	# cur = g.db.execute('select to_do')
+	cur = g.db.execute('select item, entry_time, completed_time from to_dos')
+	to_dos = [dict(item=row[0], entry_time=row[1], completed_time=row[2]) for row in cur.fetchall()]
+	return render_template()
 
 ### database functions ###
 def connect_db():
