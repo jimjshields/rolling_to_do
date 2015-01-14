@@ -1,6 +1,6 @@
 from app import app
 
-DATABASE = '/tmp/db.db'
+DATABASE = 'tmp/db.db'
 
 
 # moved to bottom - maybe use later if at all
