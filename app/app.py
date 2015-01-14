@@ -20,18 +20,19 @@ def index():
 	"""Renders the index template."""
 	return render_template("index.html")
 
-@app.route('/to_do/')
-def show_to_dos():
+@app.route('/to_do/<show_date>')
+def show_to_dos(show_date):
 	"""Renders the user's to-do list."""
-	today = datetime.now().strftime('%m/%d/%Y')
+	if show_date == 'today':
+		show_date = stringify_date(datetime.now())
 
-	today_cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos where entry_time = ? and is_completed = 0', [today])
+	today_cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos where entry_time = ? and is_completed = 0', [show_date])
 	today_to_dos = [dict(item=row[0], entry_time=row[1], is_completed=row[2], completed_time=row[3]) for row in today_cur.fetchall()]
 
-	past_cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos where entry_time < ? and is_completed = 0', [today])
+	past_cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos where entry_time < ? and is_completed = 0', [show_date])
 	past_to_dos = [dict(item=row[0], entry_time=row[1], is_completed=row[2], completed_time=row[3]) for row in past_cur.fetchall()]
 
-	today_completed_cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos where completed_time = ? and is_completed = 1', [today])
+	today_completed_cur = g.db.execute('select item, entry_time, is_completed, completed_time from to_dos where completed_time = ? and is_completed = 1', [show_date])
 	today_completed_to_dos = [dict(item=row[0], entry_time=row[1], is_completed=row[2], completed_time=row[3]) for row in today_completed_cur.fetchall()]
 	
 	return render_template('to_dos.html', today_to_dos = today_to_dos, past_to_dos = past_to_dos, today_completed_to_dos = today_completed_to_dos)
@@ -39,23 +40,23 @@ def show_to_dos():
 @app.route('/to_do/add', methods=['POST'])
 def add_to_do():
 	"""Adds a to-do from the form to the to-do list."""
-	today = datetime.now().strftime('%m/%d/%Y')
+	today = stringify_date(datetime.now())
 	g.db.execute('insert into to_dos (item, entry_time, is_completed, completed_time) values (?, ?, ?, ?)',
 				 [request.form['item'], today, False, 'NULL'])
 	g.db.commit()
 	flash('New entry was successfully posted.')
-	return redirect(url_for('show_to_dos'))
+	return redirect(url_for('show_to_dos', show_date='today'))
 
 @app.route('/to_do/complete', methods=['POST'])
 def complete_to_do():
 	"""Changes a checked to-do to completed."""
 	completed_items = [item[0] for item in request.form.items()]
-	today = datetime.now().strftime('%m/%d/%Y')
+	today = stringify_date(datetime.now())
 	for item in completed_items:
 		g.db.execute('update to_dos set is_completed = ?, completed_time = ? where item = ?;',
 					 [True, today, item])
 		g.db.commit()
-	return redirect(url_for('show_to_dos'))
+	return redirect(url_for('show_to_dos', show_date='today'))
 
 ### database functions ###
 def connect_db():
@@ -83,6 +84,9 @@ def teardown_request(exception):
 	if db is not None:
 		db.close()
 
+### utility functions ###
+def stringify_date(date):
+	return date.strftime('%m-%d-%Y')
 
 if __name__ == '__main__':
 	app.run()

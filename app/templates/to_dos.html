@@ -26,10 +26,10 @@
 	</form>
 	<form action="{{ url_for('complete_to_do') }}" method=post class=complete-to-do>
 	{% for to_do in today_to_dos %}
-		<li class="today"><input type="checkbox" name="{{ to_do.item }}" value="yes"> {{ to_do.item }}</li>
+		<li class="today"><input type="checkbox" name="{{ to_do.item }}" value="yes"> {{ to_do.item }} - {{ to_do.entry_time }}</li>
 	{% endfor %}
 	{% for to_do in past_to_dos %}
-		<li class="past"><input type="checkbox" name="{{ to_do.item }}" value="yes"> {{ to_do.item }}</li>
+		<li class="past"><input type="checkbox" name="{{ to_do.item }}" value="yes"> {{ to_do.item }} - {{ to_do.entry_time }}</li>
 	{% endfor %}
 		<br>
 		<input type="submit" value="Check off completed items">
