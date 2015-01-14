@@ -61,5 +61,6 @@ secret_key
 
 #db stuff
 tmp
+app/tmp
 *.db
 db*
