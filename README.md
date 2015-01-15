@@ -1,9 +1,9 @@
 ## Rolling To-Do
 
 ####Specs:
-1. User can add to-do items of any length
-2. User can access these in another session
-3. User can cross off these items
+1. ~~User can add to-do items of any length~~
+2. ~~User can access these in another session~~
+3. ~~User can cross off these items~~
 4. User can delete these items
 5. User can access these changes in another session
 6. There is a page for every day’s to-do list
