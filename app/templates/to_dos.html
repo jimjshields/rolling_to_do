@@ -50,6 +50,7 @@
 
 <hr>
 <h3>Completed on {{ today }}</h3>
+<ul>
 {% for to_do in today_completed_to_dos %}
 	<li class="completed">{{ to_do.item }}</li>
 {% endfor %}

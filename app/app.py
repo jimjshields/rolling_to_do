@@ -64,6 +64,7 @@ def complete_to_do():
 	return redirect(url_for('show_to_dos', show_date='today'))
 
 ### database functions ###
+
 def connect_db():
 	"""Connects to the configured database."""
 	return sqlite3.connect(app.config['DATABASE'])
@@ -90,6 +91,7 @@ def teardown_request(exception):
 		db.close()
 
 ### utility functions ###
+
 def stringify_date(date):
 	return date.strftime('%m-%d-%Y')
 
