@@ -52,13 +52,16 @@ def add_to_do():
 	# flash('New entry was successfully posted.')
 	return redirect(url_for('show_to_dos', show_date='today'))
 
-@app.route('/to_do/complete', methods=['POST'])
-def complete_to_do():
-	"""Changes a checked to-do to completed."""
-	completed_items = [item[0] for item in request.form.items()]
+@app.route('/to_do/update', methods=['POST'])
+def update_to_do():
+	"""Either completes or deletes all checked to-dos.
+	   Checks whether the button pressed is 'Complete' or 'Delete.'"""
+	
+	checked_items = [item[0] for item in request.form.items()]
 	today = stringify_date(datetime.now())
 	button = request.form['btn']
-	for item in completed_items:
+	
+	for item in checked_items:
 		if button == 'Complete':
 			g.db.execute('update to_dos set is_completed = ?, completed_time = ? where item = ?;',
 						 [True, today, item])
