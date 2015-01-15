@@ -44,7 +44,8 @@
 		<li class="past"><input type="checkbox" name="{{ to_do.item }}" value="yes"> {{ to_do.item }} (created on {{ to_do.entry_time }})</li>
 	{% endfor %}
 		<br>
-		<input type="submit" value="Check off completed items">
+		<input type="submit" name="btn" value="Complete">
+		<input type="submit" name="btn" value="Delete">
 	</form>
 </ul>
 

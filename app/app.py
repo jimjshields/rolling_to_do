@@ -57,10 +57,16 @@ def complete_to_do():
 	"""Changes a checked to-do to completed."""
 	completed_items = [item[0] for item in request.form.items()]
 	today = stringify_date(datetime.now())
+	button = request.form['btn']
 	for item in completed_items:
-		g.db.execute('update to_dos set is_completed = ?, completed_time = ? where item = ?;',
-					 [True, today, item])
-		g.db.commit()
+		if button == 'Complete':
+			g.db.execute('update to_dos set is_completed = ?, completed_time = ? where item = ?;',
+						 [True, today, item])
+			g.db.commit()
+		elif button == 'Delete':
+			g.db.execute('delete from to_dos where item = ?;',
+					 [item])
+			g.db.commit()
 	return redirect(url_for('show_to_dos', show_date='today'))
 
 ### database functions ###
