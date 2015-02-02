@@ -58,3 +58,9 @@ def update_to_do():
 					 [item])
 			g.db.commit()
 	return redirect(url_for('show_to_dos', show_date='today'))
+
+
+### utility functions ###
+
+def stringify_date(date):
+	return date.strftime('%m-%d-%Y')

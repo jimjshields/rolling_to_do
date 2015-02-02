@@ -40,11 +40,6 @@ def teardown_request(exception):
 	if db is not None:
 		db.close()
 
-### utility functions ###
-
-def stringify_date(date):
-	return date.strftime('%m-%d-%Y')
-
 if __name__ == '__main__':
 	app.run()
 
