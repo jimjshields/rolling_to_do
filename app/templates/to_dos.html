@@ -1,5 +1,21 @@
 {% block head %}
 <style>
+	* {
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+   		font-weight: 300;
+	}
+	body {
+		padding: 0;
+		margin: 0;
+	}
+	ul.navbar {
+		background-color: #4C91E0;
+		height: 20px;
+	}
+	ul.navbar, ul.navbar a {
+		color: white;
+
+	}
 	body {
 		text-align: center;
 	}
@@ -28,6 +44,12 @@
 	}
 
 </style>
+<ul class="navbar">
+	<li class="date-links"><a href="/to_do/{{ yesterday }}">{{ yesterday }}</a></li> |
+	<li class="date-links"><a href="/to_do/today">Today</a></li> |
+	<li class="date-links"><a href="/to_do/{{ tomorrow }}">{{ tomorrow }}</a></li>
+</ul>
+
 {% endblock %}
 
 {% block body %}
@@ -59,10 +81,3 @@
 </ul>
 
 {% endblock %}
-
-<hr>
-<ul class="navbar">
-	<li class="date-links"><a href="/to_do/{{ yesterday }}">{{ yesterday }}</a></li> |
-	<li class="date-links"><a href="/to_do/today">Today</a></li> |
-	<li class="date-links"><a href="/to_do/{{ tomorrow }}">{{ tomorrow }}</a></li>
-</ul>
