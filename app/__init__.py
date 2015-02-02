@@ -34,9 +34,6 @@ def teardown_request(exception):
 	if db is not None:
 		db.close()
 
-if __name__ == '__main__':
-	app.run()
-
 
 # login - hold off until later
 # from forms import LoginForm
